@@ -2,7 +2,7 @@
 /* eslint-disable react/function-component-definition */
 /**
 =========================================================
-* Material Dashboard 2 React - v2.1.0
+* Swayam Swastha React - v2.1.0
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/material-dashboard-react
@@ -18,7 +18,7 @@ Coded by www.creative-tim.com
 // @mui material components
 import Tooltip from "@mui/material/Tooltip";
 
-// Material Dashboard 2 React components
+// Swayam Swastha React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDAvatar from "components/MDAvatar";
@@ -86,7 +86,7 @@ export default function data() {
             image={logoXD}
             name="/**
 =========================================================
-* Material Dashboard 2 React - v2.1.0
+* Swayam Swastha React - v2.1.0
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/material-dashboard-react

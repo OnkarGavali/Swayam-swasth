@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Material Dashboard 2 React - v2.1.0
+* Swayam Swastha React - v2.1.0
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/material-dashboard-react
@@ -16,10 +16,10 @@ Coded by www.creative-tim.com
 // @mui material components
 import Grid from "@mui/material/Grid";
 
-// Material Dashboard 2 React components
+// Swayam Swastha React components
 import MDBox from "components/MDBox";
 
-// Material Dashboard 2 React example components
+// Swayam Swastha React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
@@ -46,10 +46,10 @@ function Dashboard() {
           <Grid item xs={12} md={6} lg={3}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
-                color="dark"
-                icon="weekend"
-                title="Bookings"
-                count={281}
+                color="success"
+                icon=""
+                title="Temperature"
+                count="37 c"
                 percentage={{
                   color: "success",
                   amount: "+55%",
@@ -58,7 +58,7 @@ function Dashboard() {
               />
             </MDBox>
           </Grid>
-          <Grid item xs={12} md={6} lg={3}>
+          {/* <Grid item xs={12} md={6} lg={3}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 icon="leaderboard"
@@ -71,14 +71,14 @@ function Dashboard() {
                 }}
               />
             </MDBox>
-          </Grid>
+          </Grid> */}
           <Grid item xs={12} md={6} lg={3}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 color="success"
-                icon="store"
-                title="Revenue"
-                count="34k"
+                icon="heart"
+                title="Pulse Rate"
+                count="110 bpm"
                 percentage={{
                   color: "success",
                   amount: "+1%",
@@ -87,7 +87,7 @@ function Dashboard() {
               />
             </MDBox>
           </Grid>
-          <Grid item xs={12} md={6} lg={3}>
+          {/* <Grid item xs={12} md={6} lg={3}>
             <MDBox mb={1.5}>
               <ComplexStatisticsCard
                 color="primary"
@@ -101,11 +101,11 @@ function Dashboard() {
                 }}
               />
             </MDBox>
-          </Grid>
+          </Grid> */}
         </Grid>
         <MDBox mt={4.5}>
           <Grid container spacing={3}>
-            <Grid item xs={12} md={6} lg={4}>
+            {/* <Grid item xs={12} md={6} lg={4}>
               <MDBox mb={3}>
                 <ReportsBarChart
                   color="info"
@@ -115,12 +115,12 @@ function Dashboard() {
                   chart={reportsBarChartData}
                 />
               </MDBox>
-            </Grid>
+            </Grid> */}
             <Grid item xs={12} md={6} lg={4}>
               <MDBox mb={3}>
                 <ReportsLineChart
                   color="success"
-                  title="daily sales"
+                  title="Temperature"
                   description={
                     <>
                       (<strong>+15%</strong>) increase in today sales.
@@ -134,8 +134,8 @@ function Dashboard() {
             <Grid item xs={12} md={6} lg={4}>
               <MDBox mb={3}>
                 <ReportsLineChart
-                  color="dark"
-                  title="completed tasks"
+                  color="success"
+                  title="Pulse"
                   description="Last Campaign Performance"
                   date="just updated"
                   chart={tasks}
@@ -155,7 +155,7 @@ function Dashboard() {
           </Grid>
         </MDBox>
       </MDBox>
-      <Footer />
+      {/* <Footer /> */}
     </DashboardLayout>
   );
 }

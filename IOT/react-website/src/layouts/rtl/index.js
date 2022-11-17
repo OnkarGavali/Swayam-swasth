@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Material Dashboard 2 React - v2.1.0
+* Swayam Swastha React - v2.1.0
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/material-dashboard-react
@@ -18,10 +18,10 @@ import { useEffect } from "react";
 // @mui material components
 import Grid from "@mui/material/Grid";
 
-// Material Dashboard 2 React components
+// Swayam Swastha React components
 import MDBox from "components/MDBox";
 
-// Material Dashboard 2 React example components
+// Swayam Swastha React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
@@ -37,7 +37,7 @@ import reportsLineChartData from "layouts/rtl/data/reportsLineChartData";
 import Projects from "layouts/rtl/components/Projects";
 import OrdersOverview from "layouts/rtl/components/OrdersOverview";
 
-// Material Dashboard 2 React contexts
+// Swayam Swastha React contexts
 import { useMaterialUIController, setDirection } from "context";
 
 function RTL() {
@@ -66,7 +66,7 @@ function RTL() {
                 percentage={{
                   color: "success",
                   amount: "+55%",
-                  label: "من الأسبوع الماضي",
+                  label: "",
                 }}
               />
             </MDBox>
@@ -80,7 +80,7 @@ function RTL() {
                 percentage={{
                   color: "success",
                   amount: "+3%",
-                  label: "من الأسبوع الماضي",
+                  label: "",
                 }}
               />
             </MDBox>

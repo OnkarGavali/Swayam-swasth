@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Material Dashboard 2 React - v2.1.0
+* Swayam Swastha React - v2.1.0
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/material-dashboard-react
@@ -14,15 +14,15 @@ Coded by www.creative-tim.com
 */
 
 /**
- * The base box-shadow styles for the Material Dashboard 2 PRO React.
+ * The base box-shadow styles for the Swayam Swastha PRO React.
  * You can add new box-shadow using this file.
- * You can customized the box-shadow for the entire Material Dashboard 2 PRO React using thie file.
+ * You can customized the box-shadow for the entire Swayam Swastha PRO React using thie file.
  */
 
-// Material Dashboard 2 React Base Styles
+// Swayam Swastha React Base Styles
 import colors from "assets/theme/base/colors";
 
-// Material Dashboard 2 React Helper Functions
+// Swayam Swastha React Helper Functions
 import boxShadow from "assets/theme/functions/boxShadow";
 
 const { black, white, tabs, coloredShadows } = colors;

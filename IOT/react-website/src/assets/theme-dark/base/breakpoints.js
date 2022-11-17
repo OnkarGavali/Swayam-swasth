@@ -1,6 +1,6 @@
 /**
 =========================================================
-* Material Dashboard 2 React - v2.1.0
+* Swayam Swastha React - v2.1.0
 =========================================================
 
 * Product Page: https://www.creative-tim.com/product/material-dashboard-react
@@ -14,9 +14,9 @@ Coded by www.creative-tim.com
 */
 
 /**
- * The base breakpoints for the Material Dashboard 2 PRO React.
+ * The base breakpoints for the Swayam Swastha PRO React.
  * You can add new breakpoints using this file.
- * You can customized the breakpoints for the entire Material Dashboard 2 PRO React using thie file.
+ * You can customized the breakpoints for the entire Swayam Swastha PRO React using thie file.
  */
 
 const breakpoints = {
