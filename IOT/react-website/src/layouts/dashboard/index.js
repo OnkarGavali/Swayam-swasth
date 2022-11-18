@@ -34,9 +34,32 @@ import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
 // Dashboard components
 import Projects from "layouts/dashboard/components/Projects";
 import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
+import { useState } from "react";
+import { useEffect } from "react";
+import { db } from "utlis/firebase";
+import { onValue, ref } from "firebase/database"
 
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
+  const [projects, setProjects] = useState([]);
+  const [BPM, setBPM] = useState(0);
+  
+    
+
+  useEffect(() => {
+    const query = ref(db, "Patient");
+    return onValue(query, (snapshot) => {
+      const data = snapshot.val();
+      console.log("bpmval:",data);
+      setBPM(data.BPM)
+      if (snapshot.exists()) {
+        Object.values(data).map((project) => {
+          setProjects((projects) => [...projects, project]);
+        });
+      }
+    });
+  }, []);
+  
 
   return (
     <DashboardLayout>
@@ -49,7 +72,7 @@ function Dashboard() {
                 color="success"
                 icon=""
                 title="Temperature"
-                count="37 c"
+                count={BPM}
                 percentage={{
                   color: "success",
                   amount: "+55%",
