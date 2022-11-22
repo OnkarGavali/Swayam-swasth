@@ -14,7 +14,7 @@ Coded by www.creative-tim.com
 */
 
 // react-router-dom components
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
@@ -31,8 +31,32 @@ import CoverLayout from "layouts/authentication/components/CoverLayout";
 
 // Images
 import bgImage from "assets/images/bg-sign-up-cover.jpeg";
+//firebase
+import { auth, registerWithEmailAndPassword } from "utlis/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useEffect, useState } from "react";
+
+
+
 
 function Cover() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [user, loading, error] = useAuthState(auth);
+  const navigate = useNavigate();
+
+  const register = async () => {
+    console.log("himm");
+    if (!name && !email && !password) alert("Please enter name");
+    await registerWithEmailAndPassword(name, email, password);
+  };
+  useEffect(() => {
+    if (loading) return;
+    console.log("hi");
+    if (user) navigate("/dashboard");
+    console.log("bye");
+  }, [user, loading]);
   return (
     <CoverLayout image={bgImage}>
       <Card>
@@ -57,13 +81,17 @@ function Cover() {
         <MDBox pt={4} pb={3} px={3}>
           <MDBox component="form" role="form">
             <MDBox mb={2}>
-              <MDInput type="text" label="Name" variant="standard" fullWidth />
+              <MDInput type="text" label="Name" variant="standard" fullWidth  value={name} onChange={(e) => setName(e.target.value)} placeholder="Full Name"/>
             </MDBox>
             <MDBox mb={2}>
-              <MDInput type="email" label="Email" variant="standard" fullWidth />
+              <MDInput type="email" label="Email" variant="standard" fullWidth value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="E-mail Address"/>
             </MDBox>
             <MDBox mb={2}>
-              <MDInput type="password" label="Password" variant="standard" fullWidth />
+              <MDInput type="password" label="Password" variant="standard" fullWidth value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"/>
             </MDBox>
             <MDBox display="flex" alignItems="center" ml={-1}>
               <Checkbox />
@@ -87,7 +115,7 @@ function Cover() {
               </MDTypography>
             </MDBox>
             <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" fullWidth>
+              <MDButton variant="gradient" color="info" fullWidth onClick={register}>
                 sign in
               </MDButton>
             </MDBox>

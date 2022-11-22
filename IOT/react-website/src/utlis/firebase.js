@@ -1,12 +1,23 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getDatabase } from "firebase/database";
-//import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+import { getDatabase } from "firebase/database";
+
+import { initializeApp } from "firebase/app";
+
+import { getAuth,
+signInWithPopup, signInWithEmailAndPassword,
+createUserWithEmailAndPassword,
+sendPasswordResetEmail,
+signOut,
+} from "firebase/auth";
+import {
+getFirestore,
+query,
+getDocs,
+collection,
+where,
+addDoc} from "firebase/firestore";
+
 const firebaseConfig = {
   apiKey: "AIzaSyDwChL454StZoSAypZnbveq24ayvg5YCjQ",
   authDomain: "mega-project-475de.firebaseapp.com",
@@ -15,11 +26,61 @@ const firebaseConfig = {
   storageBucket: "mega-project-475de.appspot.com",
   messagingSenderId: "537779729284",
   appId: "1:537779729284:web:1dcbc1168b17d66d03a3d1",
-  measurementId: "G-G0K8F5YKN7"
+  measurementId: "G-G0K8F5YKN7",
 };
-
-// Initialize Firebase
-//const analytics = getAnalytics(app);
-
 const app = initializeApp(firebaseConfig);
-export const db = getDatabase(app);
+const auth = getAuth(app);
+const dbfirestore = getFirestore(app);
+const db = getDatabase(app);
+
+const logInWithEmailAndPassword = async (email, password) => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
+    }
+  };
+const registerWithEmailAndPassword = async (name, email, password) => {
+  console.log(name,'AA');
+  try {
+    const res = await createUserWithEmailAndPassword(auth, email, password);
+    const user = res.user;
+    console.log(user,'AA');
+    await addDoc(collection(dbfirestore, "us"), {
+      uid: user.uid,
+      displayName: name,
+      authProvider: "local",
+      email,
+    });
+    console.log(user,'BB');
+  } catch (err) {
+    console.log(user,'cc');
+    console.error(err);
+    alert(err.message); 
+  }
+};
+  const sendPasswordReset = async (email) => {
+    try {
+      await sendPasswordResetEmail(auth, email);
+      alert("Password reset link sent!");
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
+    }
+  };
+  const logout = () => {
+    signOut(auth);
+  };
+
+
+
+  export {
+    auth,
+    db,
+    dbfirestore,
+    logInWithEmailAndPassword,
+    registerWithEmailAndPassword,
+    sendPasswordReset,
+    logout,
+  };
