@@ -33,11 +33,11 @@ import Footer from "examples/Footer";
 import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
 import ProfilesList from "examples/Lists/ProfilesList";
 import DefaultProjectCard from "examples/Cards/ProjectCards/DefaultProjectCard";
-
+import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
 // Overview page components
 import Header from "layouts/profile/components/Header";
 import PlatformSettings from "layouts/profile/components/PlatformSettings";
-
+import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
 // Data
 import profilesListData from "layouts/profile/data/profilesListData";
 
@@ -59,9 +59,9 @@ function Overview() {
       <Header>
         <MDBox mt={5} mb={3}>
           <Grid container spacing={1}>
-            <Grid item xs={12} md={6} xl={4}>
+            {/* <Grid item xs={12} md={6} xl={4}>
               <PlatformSettings />
-            </Grid>
+            </Grid> */}
             <Grid item xs={12} md={6} xl={4} sx={{ display: "flex" }}>
               <Divider orientation="vertical" sx={{ ml: -2, mr: 1 }} />
               <ProfileInfoCard
@@ -74,21 +74,21 @@ function Overview() {
                   location: "USA",
                 }}
                 social={[
-                  {
-                    link: "https://www.facebook.com/CreativeTim/",
-                    icon: <FacebookIcon />,
-                    color: "facebook",
-                  },
-                  {
-                    link: "https://twitter.com/creativetim",
-                    icon: <TwitterIcon />,
-                    color: "twitter",
-                  },
-                  {
-                    link: "https://www.instagram.com/creativetimofficial/",
-                    icon: <InstagramIcon />,
-                    color: "instagram",
-                  },
+                  // {
+                  //   link: "https://www.facebook.com/CreativeTim/",
+                  //   icon: <FacebookIcon />,
+                  //   color: "facebook",
+                  // },
+                  // {
+                  //   link: "https://twitter.com/creativetim",
+                  //   icon: <TwitterIcon />,
+                  //   color: "twitter",
+                  // },
+                  // {
+                  //   link: "https://www.instagram.com/creativetimofficial/",
+                  //   icon: <InstagramIcon />,
+                  //   color: "instagram",
+                  // },
                 ]}
                 action={{ route: "", tooltip: "Edit Profile" }}
                 shadow={false}
@@ -96,11 +96,53 @@ function Overview() {
               <Divider orientation="vertical" sx={{ mx: 0 }} />
             </Grid>
             <Grid item xs={12} xl={4}>
-              <ProfilesList title="conversations" profiles={profilesListData} shadow={false} />
+              <MDBox mb={1.5}>
+              <ComplexStatisticsCard
+                color="success"
+                icon=""
+                title="Temperature"
+                count="98 deg F"
+                percentage={{
+                  color: "success",
+                  amount: "",
+                  label: "updated 3 mins ago",
+                }}
+              />
+            </MDBox>
+            <MDBox mb={3}>
+                <ReportsLineChart
+                  color="success"
+                  title="Temperature"
+                  description={
+                    <>
+                     
+                    </>
+                  }
+                  date="updated 4 min ago"
+                  chart={sales}
+                />
+              </MDBox>
+
+            </Grid>
+            <Grid item xs={12} xl={4}>
+              <MDBox mb={1.5}>
+              <ComplexStatisticsCard
+                color="success"
+                icon=""
+                title="Pulse"
+                count="110 BPM"
+                percentage={{
+                  color: "success",
+                  amount: "",
+                  label: "updated 3 mins ago",
+                }}
+              />
+            </MDBox>
+
             </Grid>
           </Grid>
         </MDBox>
-        <MDBox pt={2} px={2} lineHeight={1.25}>
+        {/* <MDBox pt={2} px={2} lineHeight={1.25}>
           <MDTypography variant="h6" fontWeight="medium">
             Projects
           </MDTypography>
@@ -109,8 +151,8 @@ function Overview() {
               Architects design houses
             </MDTypography>
           </MDBox>
-        </MDBox>
-        <MDBox p={2}>
+        </MDBox> */}
+        {/* <MDBox p={2}>
           <Grid container spacing={6}>
             <Grid item xs={12} md={6} xl={3}>
               <DefaultProjectCard
@@ -193,7 +235,7 @@ function Overview() {
               />
             </Grid>
           </Grid>
-        </MDBox>
+        </MDBox> */}
       </Header>
       <Footer />
     </DashboardLayout>

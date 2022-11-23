@@ -1,17 +1,4 @@
-/**
-=========================================================
-* Swayam Swastha React - v2.1.0
-=========================================================
 
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
 
 // @mui material components
 import Grid from "@mui/material/Grid";
@@ -45,6 +32,7 @@ import { query, collection, getDocs, where } from "firebase/firestore";
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
   const [projects, setProjects] = useState([]);
+  
   const [BPM, setBPM] = useState(0);
   
   const [user, loading, error] = useAuthState(auth);
@@ -74,6 +62,7 @@ function Dashboard() {
       const data = snapshot.val();
       console.log("bpmval:",data);
       setBPM(data.BPM)
+      setName(data.Email)
       if (snapshot.exists()) {
         Object.values(data).map((project) => {
           setProjects((projects) => [...projects, project]);
@@ -97,8 +86,8 @@ function Dashboard() {
                 count={BPM}
                 percentage={{
                   color: "success",
-                  amount: "+55%",
-                  label: "than lask week",
+                  amount: "",
+                  label: "updated 3 mins ago",
                 }}
               />
             </MDBox>
@@ -126,8 +115,8 @@ function Dashboard() {
                 count="110 bpm"
                 percentage={{
                   color: "success",
-                  amount: "+1%",
-                  label: "than yesterday",
+                  amount: "",
+                  label: "updated 2 hrs ago",
                 }}
               />
             </MDBox>
@@ -168,7 +157,7 @@ function Dashboard() {
                   title="Temperature"
                   description={
                     <>
-                      (<strong>+15%</strong>) increase in today sales.
+                     
                     </>
                   }
                   date="updated 4 min ago"
@@ -181,8 +170,8 @@ function Dashboard() {
                 <ReportsLineChart
                   color="success"
                   title="Pulse"
-                  description="Last Campaign Performance"
-                  date="just updated"
+                  description=""
+                  date=""
                   chart={tasks}
                 />
               </MDBox>
@@ -190,14 +179,12 @@ function Dashboard() {
           </Grid>
         </MDBox>
         <MDBox>
-          {/* <Grid container spacing={3}>
+          <Grid container spacing={3}>
             <Grid item xs={12} md={6} lg={8}>
               <Projects />
             </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-              <OrdersOverview />
-            </Grid>
-          </Grid> */}
+           
+          </Grid>
         </MDBox>
       </MDBox>
       {/* <Footer /> */}

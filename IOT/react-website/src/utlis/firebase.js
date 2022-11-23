@@ -33,6 +33,7 @@ const auth = getAuth(app);
 const dbfirestore = getFirestore(app);
 const db = getDatabase(app);
 
+
 const logInWithEmailAndPassword = async (email, password) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
@@ -77,6 +78,7 @@ const registerWithEmailAndPassword = async (name, email, password) => {
 
   export {
     auth,
+    app,
     db,
     dbfirestore,
     logInWithEmailAndPassword,

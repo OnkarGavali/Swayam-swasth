@@ -46,7 +46,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 
 function Basic() {
   const [rememberMe, setRememberMe] = useState(false);
-
+  
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
 
   const [email, setEmail] = useState("");

@@ -38,7 +38,7 @@ function PlatformSettings() {
           platform settings
         </MDTypography>
       </MDBox>
-      <MDBox pt={1} pb={2} px={2} lineHeight={1.25}>
+      {/* <MDBox pt={1} pb={2} px={2} lineHeight={1.25}>
         <MDTypography variant="caption" fontWeight="bold" color="text" textTransform="uppercase">
           account
         </MDTypography>
@@ -107,7 +107,7 @@ function PlatformSettings() {
             </MDTypography>
           </MDBox>
         </MDBox>
-      </MDBox>
+      </MDBox> */}
     </Card>
   );
 }

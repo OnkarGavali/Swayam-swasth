@@ -1,17 +1,4 @@
-/**
-=========================================================
-* Swayam Swastha React - v2.1.0
-=========================================================
 
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
 
 import { useState } from "react";
 
@@ -25,6 +12,11 @@ import MenuItem from "@mui/material/MenuItem";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 
+import { useEffect } from "react";
+import { auth,db,dbfirestore } from "utlis/firebase";
+import { onValue, ref } from "firebase/database"
+import { useNavigate } from "react-router-dom";
+import { useAuthState } from "react-firebase-hooks/auth";
 // Swayam Swastha React examples
 import DataTable from "examples/Tables/DataTable";
 
@@ -34,9 +26,49 @@ import data from "layouts/dashboard/components/Projects/data";
 function Projects() {
   const { columns, rows } = data();
   const [menu, setMenu] = useState(null);
-
+  const [projects, setProjects] = useState([]);
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => setMenu(null);
+  const [BPM, setBPM] = useState(0);
+  
+  const [user, loading, error] = useAuthState(auth);
+  const [name, setName] = useState("");
+  const navigate = useNavigate();
+  const fetchUserName = async () => {
+    try {
+      console.log(user)
+      const q = query(collection(dbfirestore, "users"), where("uid", "==", user?.uid));
+      const doc = await getDocs(q);
+      const data = doc.docs[0].data();
+      setName(data.name);
+    } catch (err) {
+      console.error(err);
+      alert("An error occured while fetching user data");
+    }
+  };
+  // useEffect(() => {
+  //   if (loading) return;
+  //   if (!user) return navigate("/authentication/sign-in");
+  //   //fetchUserName();
+  // }, [user, loading]);
+
+  useEffect(() => {
+    const query = ref(db, "Patient");
+    return onValue(query, (snapshot) => {
+      const data = snapshot.val();
+      console.log("bpmval:",data);
+      setBPM(data.BPM)
+      setName(data.Email)
+      if (snapshot.exists()) {
+        Object.values(data).map((project) => {
+          setProjects((projects) => [...projects, project]);
+        });
+      }
+      console.log(projects)
+    });
+  }, []);
+
+
 
   const renderMenu = (
     <Menu
