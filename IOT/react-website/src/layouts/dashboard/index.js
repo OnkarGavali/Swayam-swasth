@@ -36,15 +36,37 @@ import Projects from "layouts/dashboard/components/Projects";
 import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
 import { useState } from "react";
 import { useEffect } from "react";
-import { db } from "utlis/firebase";
+import { auth,db,dbfirestore } from "utlis/firebase";
 import { onValue, ref } from "firebase/database"
+import { useNavigate } from "react-router-dom";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { query, collection, getDocs, where } from "firebase/firestore";
 
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
   const [projects, setProjects] = useState([]);
   const [BPM, setBPM] = useState(0);
   
-    
+  const [user, loading, error] = useAuthState(auth);
+  const [name, setName] = useState("");
+  const navigate = useNavigate();
+  const fetchUserName = async () => {
+    try {
+      console.log(user)
+      const q = query(collection(dbfirestore, "users"), where("uid", "==", user?.uid));
+      const doc = await getDocs(q);
+      const data = doc.docs[0].data();
+      setName(data.name);
+    } catch (err) {
+      console.error(err);
+      alert("An error occured while fetching user data");
+    }
+  };
+  // useEffect(() => {
+  //   if (loading) return;
+  //   if (!user) return navigate("/authentication/sign-in");
+  //   //fetchUserName();
+  // }, [user, loading]);
 
   useEffect(() => {
     const query = ref(db, "Patient");
