@@ -53,9 +53,11 @@ import team4 from "assets/images/team-4.jpg";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "utlis/firebase";
 import { useEffect } from "react";
+import {  useNavigate } from "react-router-dom";
 
 function Overview() {
   const [user, loading, error] = useAuthState(auth);
+  const navigate = useNavigate();
   useEffect(() => {
     if (loading) return;
     if (!user){
@@ -75,7 +77,6 @@ function Overview() {
               <PlatformSettings />
             </Grid> */}
             <Grid item xs={12} md={6} xl={4} sx={{ display: "flex" }}>
-              {console.log(user)}
               <Divider orientation="vertical" sx={{ ml: -2, mr: 1 }} />
               {
                 user !== null ?(

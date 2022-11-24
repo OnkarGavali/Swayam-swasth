@@ -53,8 +53,6 @@ import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "co
 import brandWhite from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
 
-// firebase
-import { useAuthState } from "react-firebase-hooks/auth";
 
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();

@@ -40,7 +40,7 @@ function Dashboard() {
   const navigate = useNavigate();
   const fetchUserName = async () => {
     try {
-      const q = query(collection(dbfirestore, "us"), where("uid", "==", user?.uid));
+      const q = query(collection(dbfirestore, "doctors"), where("uid", "==", user?.uid));
       const doc = await getDocs(q);
       const data = doc.docs[0].data();
       setName(data);
