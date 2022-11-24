@@ -47,6 +47,7 @@ import SignUp from "layouts/authentication/sign-up";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
+import DeviceForm from "layouts/deviceform";
 
 const routes = [
   {
@@ -88,6 +89,14 @@ const routes = [
     icon: <Icon fontSize="small">notifications</Icon>,
     route: "/notifications",
     component: <Notifications />,
+  },
+  {
+    type: "collapse",
+    name: "Devices",
+    key: "devices",
+    icon: <Icon fontSize="small">notifications</Icon>,
+    route: "/deviceform",
+    component: <DeviceForm />,
   },
   {
     type: "collapse",

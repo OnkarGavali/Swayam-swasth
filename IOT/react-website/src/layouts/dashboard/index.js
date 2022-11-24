@@ -40,21 +40,24 @@ function Dashboard() {
   const navigate = useNavigate();
   const fetchUserName = async () => {
     try {
-      console.log(user)
-      const q = query(collection(dbfirestore, "users"), where("uid", "==", user?.uid));
+      const q = query(collection(dbfirestore, "us"), where("uid", "==", user?.uid));
       const doc = await getDocs(q);
       const data = doc.docs[0].data();
-      setName(data.name);
+      setName(data);
+      console.log(data.name)
     } catch (err) {
       console.error(err);
       alert("An error occured while fetching user data");
     }
   };
-  // useEffect(() => {
-  //   if (loading) return;
-  //   if (!user) return navigate("/authentication/sign-in");
-  //   //fetchUserName();
-  // }, [user, loading]);
+  useEffect(() => {
+    if (loading) return;
+    if (!user){
+      console.log("Dashboard user not found");
+      return navigate("/authentication/sign-in");
+    }
+    fetchUserName();
+  }, [user, loading]);
 
   useEffect(() => {
     const query = ref(db, "Patient");

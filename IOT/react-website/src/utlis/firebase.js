@@ -9,6 +9,7 @@ signInWithPopup, signInWithEmailAndPassword,
 createUserWithEmailAndPassword,
 sendPasswordResetEmail,
 signOut,
+updateProfile,
 } from "firebase/auth";
 import {
 getFirestore,
@@ -16,7 +17,8 @@ query,
 getDocs,
 collection,
 where,
-addDoc} from "firebase/firestore";
+addDoc,
+setDoc} from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDwChL454StZoSAypZnbveq24ayvg5YCjQ",
@@ -50,9 +52,16 @@ const registerWithEmailAndPassword = async (name, email, password) => {
     console.log(user,'AA');
     await addDoc(collection(dbfirestore, "us"), {
       uid: user.uid,
-      displayName: name,
+      name,
       authProvider: "local",
       email,
+    });
+    updateProfile(auth.currentUser, {
+      displayName: name
+    }).then(() => {
+      alert("user added")
+    }).catch((error) => {
+      alert(error.message)
     });
     console.log(user,'BB');
   } catch (err) {

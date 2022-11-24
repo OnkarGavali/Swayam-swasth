@@ -40,7 +40,7 @@ import BasicLayout from "layouts/authentication/components/BasicLayout";
 
 // Images
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
-import { auth } from "utlis/firebase";
+import { auth,logInWithEmailAndPassword } from "utlis/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -122,7 +122,7 @@ function Basic() {
               </MDTypography>
             </MDBox>
             <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" fullWidth onClick={() => signInWithEmailAndPassword(email, password)}>
+              <MDButton variant="gradient" color="info" fullWidth onClick={() => logInWithEmailAndPassword(email, password)}>
                 sign in
               </MDButton>
             </MDBox>

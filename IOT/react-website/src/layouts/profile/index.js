@@ -50,8 +50,20 @@ import team1 from "assets/images/team-1.jpg";
 import team2 from "assets/images/team-2.jpg";
 import team3 from "assets/images/team-3.jpg";
 import team4 from "assets/images/team-4.jpg";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "utlis/firebase";
+import { useEffect } from "react";
 
 function Overview() {
+  const [user, loading, error] = useAuthState(auth);
+  useEffect(() => {
+    if (loading) return;
+    if (!user){
+      console.log("Dashboard user not found");
+      return navigate("/authentication/sign-in");
+    }
+    
+  }, [user, loading]);
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -63,12 +75,15 @@ function Overview() {
               <PlatformSettings />
             </Grid> */}
             <Grid item xs={12} md={6} xl={4} sx={{ display: "flex" }}>
+              {console.log(user)}
               <Divider orientation="vertical" sx={{ ml: -2, mr: 1 }} />
-              <ProfileInfoCard
+              {
+                user !== null ?(
+                  <ProfileInfoCard
                 title="profile information"
                 description="Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
                 info={{
-                  fullName: "Alec M. Thompson",
+                  fullName: JSON.stringify(user),
                   mobile: "(44) 123 1234 123",
                   email: "alecthompson@mail.com",
                   location: "USA",
@@ -93,6 +108,67 @@ function Overview() {
                 action={{ route: "", tooltip: "Edit Profile" }}
                 shadow={false}
               />
+                ):(
+                  <ProfileInfoCard
+                title="profile information"
+                description="Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
+                info={{
+                  fullName: "AAA",
+                  mobile: "(44) 123 1234 123",
+                  email: "alecthompson@mail.com",
+                  location: "USA",
+                }}
+                social={[
+                  // {
+                  //   link: "https://www.facebook.com/CreativeTim/",
+                  //   icon: <FacebookIcon />,
+                  //   color: "facebook",
+                  // },
+                  // {
+                  //   link: "https://twitter.com/creativetim",
+                  //   icon: <TwitterIcon />,
+                  //   color: "twitter",
+                  // },
+                  // {
+                  //   link: "https://www.instagram.com/creativetimofficial/",
+                  //   icon: <InstagramIcon />,
+                  //   color: "instagram",
+                  // },
+                ]}
+                action={{ route: "", tooltip: "Edit Profile" }}
+                shadow={false}
+              />
+                )
+              }
+              {/* <ProfileInfoCard
+                title="profile information"
+                description="Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
+                info={{
+                  // fullName: user.name,
+                  // mobile: "(44) 123 1234 123",
+                  // email: "alecthompson@mail.com",
+                  // location: "USA",
+                }}
+                social={[
+                  // {
+                  //   link: "https://www.facebook.com/CreativeTim/",
+                  //   icon: <FacebookIcon />,
+                  //   color: "facebook",
+                  // },
+                  // {
+                  //   link: "https://twitter.com/creativetim",
+                  //   icon: <TwitterIcon />,
+                  //   color: "twitter",
+                  // },
+                  // {
+                  //   link: "https://www.instagram.com/creativetimofficial/",
+                  //   icon: <InstagramIcon />,
+                  //   color: "instagram",
+                  // },
+                ]}
+                action={{ route: "", tooltip: "Edit Profile" }}
+                shadow={false}
+              /> */}
               <Divider orientation="vertical" sx={{ mx: 0 }} />
             </Grid>
             <Grid item xs={12} xl={4}>
@@ -110,7 +186,7 @@ function Overview() {
               />
             </MDBox>
             <MDBox mb={3}>
-                <ReportsLineChart
+                {/* <ReportsLineChart
                   color="success"
                   title="Temperature"
                   description={
@@ -120,7 +196,7 @@ function Overview() {
                   }
                   date="updated 4 min ago"
                   chart={sales}
-                />
+                /> */}
               </MDBox>
 
             </Grid>
