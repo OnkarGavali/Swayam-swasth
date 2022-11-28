@@ -40,15 +40,12 @@ import BasicLayout from "layouts/authentication/components/BasicLayout";
 
 // Images
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
-import { auth } from "utlis/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth,logInWithEmailAndPassword } from "utlis/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 function Basic() {
   const [rememberMe, setRememberMe] = useState(false);
-  
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [user, loading, error] = useAuthState(auth);
@@ -59,9 +56,7 @@ function Basic() {
       // maybe trigger a loading screen
       return;
     }
-    
     if (user){
-      console.log("hi")
       navigate("/dashboard");
     }
   }, [user, loading]);
@@ -81,7 +76,7 @@ function Basic() {
           textAlign="center"
         >
           <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-            Sign in
+            Sign in as doctor
           </MDTypography>
           <Grid container spacing={3} justifyContent="center" sx={{ mt: 1, mb: 2 }}>
             <Grid item xs={2}>
@@ -122,7 +117,7 @@ function Basic() {
               </MDTypography>
             </MDBox>
             <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" fullWidth onClick={() => signInWithEmailAndPassword(email, password)}>
+              <MDButton variant="gradient" color="info" fullWidth onClick={() => logInWithEmailAndPassword(email, password)}>
                 sign in
               </MDButton>
             </MDBox>

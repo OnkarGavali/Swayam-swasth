@@ -5,18 +5,17 @@ import { getDatabase } from "firebase/database";
 import { initializeApp } from "firebase/app";
 
 import { getAuth,
-signInWithPopup, signInWithEmailAndPassword,
-createUserWithEmailAndPassword,
-sendPasswordResetEmail,
-signOut,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
+  signOut,
+  updateProfile,
 } from "firebase/auth";
 import {
-getFirestore,
-query,
-getDocs,
-collection,
-where,
-addDoc} from "firebase/firestore";
+  getFirestore,
+  collection,
+  addDoc
+} from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDwChL454StZoSAypZnbveq24ayvg5YCjQ",
@@ -28,61 +27,87 @@ const firebaseConfig = {
   appId: "1:537779729284:web:1dcbc1168b17d66d03a3d1",
   measurementId: "G-G0K8F5YKN7",
 };
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const dbfirestore = getFirestore(app);
 const db = getDatabase(app);
 
-
 const logInWithEmailAndPassword = async (email, password) => {
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-    } catch (err) {
-      console.error(err);
-      alert(err.message);
-    }
-  };
-const registerWithEmailAndPassword = async (name, email, password) => {
-  console.log(name,'AA');
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+  } catch (err) {
+    console.error(err);
+    alert(err.message);
+  }
+};
+
+
+const registerWithEmailAndPassword = async (name, email, password, type, additionalData) => {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
     const user = res.user;
-    console.log(user,'AA');
-    await addDoc(collection(dbfirestore, "us"), {
-      uid: user.uid,
-      displayName: name,
-      authProvider: "local",
-      email,
+    if(type==="doctor"){
+      await addDoc(collection(dbfirestore, "doctors"), {
+        uid: user.uid,
+        name,
+        type:"doctor",
+        email,
+        patient_id:null,
+        mobileNumber: additionalData[mobileNumber],
+      });
+    }else{
+      await addDoc(collection(dbfirestore, "patients"), {
+        uid: user.uid,
+        name,
+        type:"patient",
+        email,
+        doctor_id:null,
+        device_id:null,
+        mobileNumber: additionalData[mobileNumber],
+        age:additionalData[age],
+        description: additionalData[description]
+      });
+    }
+    
+    updateProfile(auth.currentUser, {
+      displayName: name
+    }).then(() => {
+      alert("user added")
+    }).catch((error) => {
+      alert(error.message)
     });
-    console.log(user,'BB');
   } catch (err) {
-    console.log(user,'cc');
     console.error(err);
     alert(err.message); 
   }
 };
-  const sendPasswordReset = async (email) => {
-    try {
-      await sendPasswordResetEmail(auth, email);
-      alert("Password reset link sent!");
-    } catch (err) {
-      console.error(err);
-      alert(err.message);
-    }
-  };
-  const logout = () => {
-    signOut(auth);
-  };
+
+
+const sendPasswordReset = async (email) => {
+  try {
+    await sendPasswordResetEmail(auth, email);
+    alert("Password reset link sent!");
+  } catch (err) {
+    console.error(err);
+    alert(err.message);
+  }
+};
+
+
+const logout = () => {
+  signOut(auth);
+};
 
 
 
-  export {
-    auth,
-    app,
-    db,
-    dbfirestore,
-    logInWithEmailAndPassword,
-    registerWithEmailAndPassword,
-    sendPasswordReset,
-    logout,
-  };
+export {
+  auth,
+  app,
+  db,
+  dbfirestore,
+  logInWithEmailAndPassword,
+  registerWithEmailAndPassword,
+  sendPasswordReset,
+  logout,
+};

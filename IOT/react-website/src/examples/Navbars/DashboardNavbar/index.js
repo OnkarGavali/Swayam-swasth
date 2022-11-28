@@ -52,6 +52,8 @@ import {
   setMiniSidenav,
   setOpenConfigurator,
 } from "context";
+import { logout } from "utlis/firebase";
+
 
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
@@ -172,7 +174,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 aria-controls="notification-menu"
                 aria-haspopup="true"
                 variant="contained"
-                onClick={handleOpenMenu}
+                onClick={()=> logout()}
               >
                 <Icon sx={iconsStyle}>notifications</Icon>
               </IconButton>
