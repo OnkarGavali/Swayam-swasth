@@ -29,9 +29,32 @@ import { useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { query, collection, getDocs, where } from "firebase/firestore";
 
+
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
   const [projects, setProjects] = useState([]);
+  const [BPMList, setBPMlist] = useState([])  
+  const[timeData,settimeData] = useState([])
+  let date_ob = new Date();
+
+  // current date
+  // adjust 0 before single digit date
+  let date = ("0" + date_ob.getDate()).slice(-2);
+
+  // current month
+  let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+
+  // current year
+  let year = date_ob.getFullYear();
+
+  // current hours
+  let hours = date_ob.getHours();
+
+  // current minutes
+  let minutes = date_ob.getMinutes();
+
+  // current seconds
+  let seconds = date_ob.getSeconds();
   
   const [BPM, setBPM] = useState(0);
   
@@ -47,7 +70,7 @@ function Dashboard() {
       console.log(data.name)
     } catch (err) {
       console.error(err);
-      alert("An error occured while fetching user data");
+      // alert("An error occured while fetching user data");
     }
   };
   useEffect(() => {
@@ -66,13 +89,18 @@ function Dashboard() {
       console.log("bpmval:",data);
       setBPM(data.BPM)
       setName(data.Email)
+      BPMList.push(data.BPM)
+      timeData.push(hours + ":" + minutes)
       if (snapshot.exists()) {
         Object.values(data).map((project) => {
           setProjects((projects) => [...projects, project]);
         });
       }
+      console.log(BPMList)
     });
   }, []);
+
+  
   
 
   return (
@@ -85,7 +113,7 @@ function Dashboard() {
               <ComplexStatisticsCard
                 color="success"
                 icon=""
-                title="Temperature"
+                title="Heart Rate BPM"
                 count={BPM}
                 percentage={{
                   color: "success",
@@ -114,8 +142,8 @@ function Dashboard() {
               <ComplexStatisticsCard
                 color="success"
                 icon="heart"
-                title="Pulse Rate"
-                count="110 bpm"
+                title="Temperature"
+                count="97.2 deg F"
                 percentage={{
                   color: "success",
                   amount: "",
@@ -175,7 +203,10 @@ function Dashboard() {
                   title="Pulse"
                   description=""
                   date=""
-                  chart={tasks}
+                  chart={{
+                    labels: timeData,
+                    datasets: { label: "BPM", data: BPMList },
+                  }}
                 />
               </MDBox>
             </Grid>

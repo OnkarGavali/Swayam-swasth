@@ -84,9 +84,9 @@ function Overview() {
                 title="profile information"
                 description="Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
                 info={{
-                  fullName: JSON.stringify(user),
+                  fullName: user['email'],
                   mobile: "(44) 123 1234 123",
-                  email: "alecthompson@mail.com",
+                  // email: "alecthompson@mail.com",
                   location: "USA",
                 }}
                 social={[

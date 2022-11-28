@@ -33,10 +33,15 @@ import team1 from "assets/images/team-1.jpg";
 import team2 from "assets/images/team-2.jpg";
 import team3 from "assets/images/team-3.jpg";
 import team4 from "assets/images/team-4.jpg";
+import { auth,db,dbfirestore } from "utlis/firebase";
+
 
 export default function data() {
 
-  
+ 
+
+
+    
   const avatars = (members) =>
     members.map(([image, name]) => (
       <Tooltip key={name} title={name} placeholder="bottom">
@@ -72,26 +77,18 @@ export default function data() {
   );
 
   return {
+
     columns: [
-      { Header: "companies", accessor: "companies", width: "45%", align: "left" },
+      { Header: "Name", accessor: "companies", width: "45%", align: "left" },
       // { Header: "members", accessor: "members", width: "10%", align: "left" },
-      { Header: "budget", accessor: "budget", align: "center" },
-      { Header: "completion", accessor: "completion", align: "center" },
+      { Header: "Email", accessor: "budget", align: "center" },
+      { Header: "BPM", accessor: "completion", align: "center" },
     ],
 
     rows: [
       {
         companies: <Company  name="Material UI XD Version" />,
-        members: (
-          <MDBox display="flex" py={1}>
-            {avatars([
-              [team1, "Ryan Tompson"],
-              [team2, "Romina Hadid"],
-              [team3, "Alexander Smith"],
-              [team4, "Jessica Doe"],
-            ])}
-          </MDBox>
-        ),
+      
         budget: (
           <MDTypography variant="caption" color="text" fontWeight="medium">
             $14,000
