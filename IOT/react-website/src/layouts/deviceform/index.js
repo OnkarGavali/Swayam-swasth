@@ -18,57 +18,79 @@ import { MenuItem, TextField } from "@mui/material";
 import { v4 as uuid } from 'uuid';
 import { db } from "utlis/firebase";
 import { ref, set } from "firebase/database";
+import { auth } from "utlis/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useNavigate } from "react-router-dom";
+import { collection, getDocs } from "firebase/firestore";
+import { dbfirestore } from "utlis/firebase";
+import { Email } from "@mui/icons-material";
 
 function DeviceForm() {
 
-  const deviceTypes = [
-    {
-      value: 'single_value',
-      label: 'single value',
-    },
-    {
-      value: 'multi_value',
-      label: 'multiple value',
-    },
-  ];
-  const deviceNameTypes = [
-    {
-        value: '',
-        label: 'Select Name',
-    },
-    {
-      value: 'Pulse Meter',
-      label: 'Pulse Meter',
-    },
-    {
-      value: 'Ecg Sensor',
-      label: 'Ecg Sensor',
-    },
-  ];
- 
   const [deviceId, setDeviceId] = useState(0);
   const [deviceName, setDeviceName] = useState("");
   const [criticalLower, setcriticalLower] = useState(0);
   const [criticalUpper, setcriticalUpper] = useState(1000);
 
-  const [deviceType, setDeviceType] = useState('single_value');
+  const [deviceType, setDeviceType] = useState("");
+  const [devicesList, setDevicesList] = useState([]);
   const [uploadedData, setUploadedData] = useState("")
+  const [showFinalData, setShowFinalData] = useState(false)
+  
+  const [user, loading, error] = useAuthState(auth);
+  const [name, setName] = useState("");
+  const navigate = useNavigate();
+
+  const fetchDevicesList = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(dbfirestore, "devices"));
+      let tmp=[]
+      querySnapshot.forEach((doc) => {
+        let d =doc.data();
+        tmp.push({value:d.name,label:d.name,type:d.type})
+      });
+      setDevicesList(tmp);
+    } catch (err) {
+      console.error(err);
+      // alert("An error occured while fetching user data");
+    }
+  };
   useEffect(() => {
+    if (loading) return;
+    if (!user){
+      console.log("Dashboard user not found");
+      return navigate("/authentication/sign-in");
+    }
+    fetchDevicesList();
+    generateID()
+  }, [user, loading]);
+
+  const generateID = () => {
     const unique_id = uuid();
     const small_id = unique_id.slice(0,8);
     setDeviceId(small_id);
-  }, [])
-
+  }
+  const selectDeviceType = (event) =>{
+    setDeviceName(event.target.value)
+    for (let x in devicesList) {
+      if(devicesList[x].value==event.target.value){
+        setDeviceType(devicesList[x].type)
+      }
+    }
+    
+    console.log(deviceType,deviceName)
+  }
   const checkAll = () => {
     if( deviceName === ""){
         alert("Please select name");
         return;
     }
     if(criticalLower>=criticalUpper){
-        alert("Please select proper vales");
+        alert("Please select proper values");
         return;
     }
-
+    let date = new Date();
+    date.setTime(date.getTime()-1000*60*30);
     let finalData ={
         id:deviceId,
         deviceName,
@@ -76,17 +98,27 @@ function DeviceForm() {
         criticalUpper,
         isAssigned:false,
         type:deviceType,
-        data:0
+        data:criticalLower+criticalUpper/2,
+        lastNotified:date.getTime(),
+        isPatientChecked:false,
+        isAssigned:false,
+        email:""
     }
     try{
-      const res= set(ref(db,'devices/'+ deviceId) ,finalData);
+      //const res= set(ref(db,'devices/'+ deviceId) ,finalData);
       setUploadedData(JSON.stringify(finalData));
+      setShowFinalData(true);
+      console.log(finalData)
     }catch (e) {
       alert(e.message);
     }
   }
+  const clearAll = () =>{
+    setShowFinalData(false);
+    generateID();
+    setDeviceName("")
+  }
   
-
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -103,29 +135,13 @@ function DeviceForm() {
                    
                     select
                     label="Select Device Type"
-                    value={deviceType}
-                    onChange={event => setDeviceType(event.target.value)}
-                    variant="outlined"
-                    fullWidth
-                    margin="normal"
-                    >
-                    {deviceTypes.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                        </MenuItem>
-                    ))}
-                </TextField>
-                <TextField
-                    id="outlined-select"
-                    select
-                    label="Select Device Name"
                     value={deviceName}
-                    onChange={event => setDeviceName(event.target.value)}
+                    onChange={selectDeviceType}
                     variant="outlined"
                     fullWidth
                     margin="normal"
                     >
-                    {deviceNameTypes.map((option) => (
+                    {devicesList.size !=0 && devicesList.map((option) => (
                         <MenuItem key={option.value} value={option.value}>
                         {option.label}
                         </MenuItem>
@@ -134,15 +150,35 @@ function DeviceForm() {
                 <TextField id="outlined-basic" label="Input Critical Lower Value" variant="outlined" fullWidth margin="normal" type="number"  value={criticalLower} onChange={event => setcriticalLower(event.target.value)}/>
                 <TextField id="outlined-basic" label="Input Critical Lower Value" variant="outlined" fullWidth margin="normal" type="number" value={criticalUpper} onChange={event => setcriticalUpper(event.target.value)}/>
                 
-                <MDButton variant="gradient" color="success" fullWidth margin="normal" onClick={checkAll}>
-                    submit
-                </MDButton>
+                
 
-                <p>
+                
+               
+
+                
                   {
-                    "Data uploaded succeffuly\n"+uploadedData
+                    showFinalData ? (
+                      <>
+                        <MDButton variant="gradient" color="success" fullWidth margin="normal" onClick={clearAll}>
+                          Add New Device
+                        </MDButton>
+                        <p style={{margin:"2%"}}>
+                          {"\nDeice is uploaded successfully!! please assign device\n\n " + uploadedData}
+                        </p>
+                     
+                      </>
+                     ) : (
+                      <>
+                        <MDButton variant="gradient" color="success" fullWidth margin="normal" onClick={checkAll}>
+                           Submit
+                        </MDButton>
+                        <p style={{margin:"2%"}}>
+                        {"\n"}
+                        </p>
+                      </>
+                     )
                   }
-                </p>
+                
               </MDBox>
             </Card>
           </Grid>
