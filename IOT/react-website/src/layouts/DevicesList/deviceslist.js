@@ -28,11 +28,9 @@ import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
 
 // Data
-import authorsTableData from "layouts/tables/data/authorsTableData";
+import authorsTableData from "layouts/DevicesList/data/authorsTableData";
 import projectsTableData from "layouts/tables/data/projectsTableData";
 import { useNavigate } from "react-router-dom";
-import { dbfirestore } from "utlis/firebase";
-import { collection, getDocs } from "firebase/firestore";
 import { onValue, ref } from "firebase/database";
 import { db } from "utlis/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";

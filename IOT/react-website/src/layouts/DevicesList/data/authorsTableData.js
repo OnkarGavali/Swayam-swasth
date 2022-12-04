@@ -39,13 +39,13 @@ export default function data() {
     </MDBox>
   );
 
-  const Device = ({ name, email }) => (
+  const Device = ({ name, id }) => (
     <MDBox display="flex" alignItems="center" lineHeight={1}>
       <MDBox ml={2} lineHeight={1}>
         <MDTypography display="block" variant="button" fontWeight="medium">
           {name}
         </MDTypography>
-        <MDTypography variant="caption">{email}</MDTypography>
+        <MDTypography variant="caption">{id}</MDTypography>
       </MDBox>
     </MDBox>
   );
@@ -60,17 +60,22 @@ export default function data() {
 
   return {
     columns: [
-      { Header: "Device", accessor: "device", width: "45%", align: "left" },
+      { Header: "author", accessor: "author", width: "45%", align: "left" },
       { Header: "function", accessor: "function", align: "left" },
       { Header: "status", accessor: "status", align: "center" },
       { Header: "employed", accessor: "employed", align: "center" },
       { Header: "action", accessor: "action", align: "center" },
+      { Header: "device", accessor: "device", width: "45%", align: "left" },
+      { Header: "data", accessor: "data", width: "45%", align: "left" },
+      { Header: "data", accessor: "data", width: "45%", align: "left" },
+      
     ],
-
-    rows: [
+  
+    rows: [ 
       {
-        author: <Author image={team2} name="John Michael" email="john@creative-tim.com" />,
-        function: <Job title="Manager" description="Organization" />,
+        author: <Author image={team2} name="John Michael" id="john@creative-tim.com" />,
+        device: <Device image={team2} name="John Michael" id="john@creative-tim.com" />,
+        function: <Job title="Manr" description="Organization" />,
         status: (
           <MDBox ml={-1}>
             <MDBadge badgeContent="online" color="success" variant="gradient" size="sm" />

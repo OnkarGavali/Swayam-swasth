@@ -85,13 +85,16 @@ function DeviceForm() {
         alert("Please select name");
         return;
     }
-    if(criticalLower>=criticalUpper){
+    if(parseInt(criticalLower)>=parseInt(criticalUpper)){
       alert("Please select proper values");
       return;
     }
+    setcriticalLower(Number(criticalLower))
+    setcriticalUpper(Number(criticalUpper))
     let date = new Date();
-    let currd= date; 
-    date.setTime(date.getTime()-1000*60*30);
+    let currd= new Date(); 
+    date.setTime(date.getTime()-(1000*60*30));
+    let tmpdata=(criticalLower+criticalUpper+0)/2;
     let finalData ={
       id:deviceId,
       deviceName,
@@ -99,15 +102,16 @@ function DeviceForm() {
       criticalUpper,
       isAssigned:false,
       type:deviceType,
-      data:criticalLower+criticalUpper/2,
+      data:tmpdata,
       lastNotified:date.getTime(),
       lastModified:currd.getTime(),
       isPatientChecked:false,
       isAssigned:false,
-      email:""
+      email:"",
+      patient_id:""
     }
     try{
-      //const res= set(ref(db,'devices/'+ deviceId) ,finalData);
+      const res= set(ref(db,'devices/'+ deviceId) ,finalData);
       setUploadedData(JSON.stringify(finalData));
       setShowFinalData(true);
       console.log(finalData)
@@ -118,6 +122,7 @@ function DeviceForm() {
   const clearAll = () =>{
     setShowFinalData(false);
     generateID();
+    
     setDeviceName("")
   }
   
@@ -150,7 +155,7 @@ function DeviceForm() {
                     ))}
                 </TextField>
                 <TextField id="outlined-basic" label="Input Critical Lower Value" variant="outlined" fullWidth margin="normal" type="number"  value={criticalLower} onChange={event => setcriticalLower(event.target.value)}/>
-                <TextField id="outlined-basic" label="Input Critical Lower Value" variant="outlined" fullWidth margin="normal" type="number" value={criticalUpper} onChange={event => setcriticalUpper(event.target.value)}/>
+                <TextField id="outlined-basic" label="Input Critical Upper Value" variant="outlined" fullWidth margin="normal" type="number" value={criticalUpper} onChange={event => setcriticalUpper(event.target.value)}/>
                 
                 
 
