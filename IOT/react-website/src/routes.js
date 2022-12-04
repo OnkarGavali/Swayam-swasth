@@ -48,6 +48,8 @@ import SignUp from "layouts/authentication/sign-up";
 // @mui icons
 import Icon from "@mui/material/Icon";
 import DeviceForm from "layouts/deviceform";
+import DevicesList from "layouts/DevicesList/deviceslist";
+import PatientForm from "layouts/patientform";
 
 const routes = [
   {
@@ -58,14 +60,22 @@ const routes = [
     route: "/dashboard",
     component: <Dashboard />,
   },
-  // {
-  //   type: "collapse",
-  //   name: "Tables",
-  //   key: "tables",
-  //   icon: <Icon fontSize="small">table_view</Icon>,
-  //   route: "/tables",
-  //   component: <Tables />,
-  // },
+  {
+    type: "collapse",
+    name: "Tables",
+    key: "tables",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/tables",
+    component: <Tables />,
+  },
+  {
+    type: "collapse",
+    name: "Devices List",
+    key: "deviceslist",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/deviceslist",
+    component: <DevicesList />,
+  },
   // {
   //   type: "collapse",
   //   name: "Billing",
@@ -97,6 +107,14 @@ const routes = [
     icon: <Icon fontSize="small">notifications</Icon>,
     route: "/deviceform",
     component: <DeviceForm />,
+  },
+  {
+    type: "collapse",
+    name: "Create Patient",
+    key: "createpatient",
+    icon: <Icon fontSize="small">notifications</Icon>,
+    route: "/createpatient",
+    component: <PatientForm />,
   },
   {
     type: "collapse",

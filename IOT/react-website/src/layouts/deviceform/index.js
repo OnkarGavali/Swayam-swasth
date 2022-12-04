@@ -86,23 +86,25 @@ function DeviceForm() {
         return;
     }
     if(criticalLower>=criticalUpper){
-        alert("Please select proper values");
-        return;
+      alert("Please select proper values");
+      return;
     }
     let date = new Date();
+    let currd= date; 
     date.setTime(date.getTime()-1000*60*30);
     let finalData ={
-        id:deviceId,
-        deviceName,
-        criticalLower,
-        criticalUpper,
-        isAssigned:false,
-        type:deviceType,
-        data:criticalLower+criticalUpper/2,
-        lastNotified:date.getTime(),
-        isPatientChecked:false,
-        isAssigned:false,
-        email:""
+      id:deviceId,
+      deviceName,
+      criticalLower,
+      criticalUpper,
+      isAssigned:false,
+      type:deviceType,
+      data:criticalLower+criticalUpper/2,
+      lastNotified:date.getTime(),
+      lastModified:currd.getTime(),
+      isPatientChecked:false,
+      isAssigned:false,
+      email:""
     }
     try{
       //const res= set(ref(db,'devices/'+ deviceId) ,finalData);

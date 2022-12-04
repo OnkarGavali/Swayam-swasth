@@ -43,32 +43,18 @@ const logInWithEmailAndPassword = async (email, password) => {
 };
 
 
-const registerWithEmailAndPassword = async (name, email, password, type, additionalData) => {
+const registerWithEmailAndPassword = async (name, email, password) => {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
     const user = res.user;
-    if(type==="doctor"){
-      await addDoc(collection(dbfirestore, "doctors"), {
-        uid: user.uid,
-        name,
-        type:"doctor",
-        email,
-        patient_id:null,
-        mobileNumber: additionalData[mobileNumber],
-      });
-    }else{
-      await addDoc(collection(dbfirestore, "patients"), {
-        uid: user.uid,
-        name,
-        type:"patient",
-        email,
-        doctor_id:null,
-        device_id:null,
-        mobileNumber: additionalData[mobileNumber],
-        age:additionalData[age],
-        description: additionalData[description]
-      });
-    }
+    
+    await addDoc(collection(dbfirestore, "doctors"), {
+      uid: user.uid,
+      name,
+      type:"doctor",
+      email
+    });
+   
     
     updateProfile(auth.currentUser, {
       displayName: name

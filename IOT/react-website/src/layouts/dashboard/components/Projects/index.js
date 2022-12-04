@@ -84,7 +84,7 @@ function Projects() {
             ),
       }
       rows.push(obj)
-      console.log(docs.data())
+      // console.log(docs.data())
     })
    
    
@@ -97,7 +97,7 @@ function Projects() {
       return navigate("/authentication/sign-in");
     }
     getTodos();
-    console.log(rows)
+    // console.log(rows)
   }, [user, loading]);
   // useEffect(() => {
   //   if (loading) return;
