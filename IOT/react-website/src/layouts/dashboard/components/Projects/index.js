@@ -12,12 +12,9 @@ import MenuItem from "@mui/material/MenuItem";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 
-import MDAvatar from "components/MDAvatar";
-import MDProgress from "components/MDProgress";
 
 import { useEffect } from "react";
-import { auth,db,dbfirestore } from "utlis/firebase";
-import { onValue, ref } from "firebase/database"
+import { auth,dbfirestore } from "utlis/firebase";
 import { useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 // Swayam Swastha React examples
@@ -33,16 +30,12 @@ function Projects() {
   const [menu, setMenu] = useState(null);
   let columns = [{ Header: "Name", accessor: "companies", width: "45%", align: "left" },
   // { Header: "members", accessor: "members", width: "10%", align: "left" },
-  { Header: "Email", accessor: "budget", align: "center" },
-  { Header: "BPM", accessor: "completion", align: "center" },]
+  { Header: "Email", accessor: "budget", align: "center" }]
   const [rows,setRows] = useState([])
-  const [projects, setProjects] = useState([]);
   const openMenu = ({ currentTarget }) => setMenu(currentTarget);
   const closeMenu = () => setMenu(null);
-  const [BPM, setBPM] = useState(0);
   
   const [user, loading, error] = useAuthState(auth);
-  const [name, setName] = useState("");
   const navigate = useNavigate();
   const toPatientProfile=(id)=>{
     navigate('/patientprofile',{state:{id:id}});
@@ -72,11 +65,7 @@ function Projects() {
                 {entry['patientEmail']}
               </MDTypography>
             ),
-            completion: (
-              <MDTypography variant="caption" color="text" fontWeight="medium">
-                {60}
-              </MDTypography>
-            ),
+            
       }
       rows.push(obj)
       // console.log(docs.data())
