@@ -37,11 +37,12 @@ import breakpoints from "assets/theme/base/breakpoints";
 // Images
 import burceMars from "assets/images/bruce-mars.jpg";
 import backgroundImage from "assets/images/bg-profile.jpeg";
+import { Link } from "react-router-dom";
 
 function Header({ name,children }) {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [tabValue, setTabValue] = useState(0);
-
+  
   useEffect(() => {
     // A function that sets the orientation state of the tabs.
     function handleTabsOrientation() {
@@ -103,9 +104,13 @@ function Header({ name,children }) {
               </MDTypography>
               <MDTypography variant="button" color="text" fontWeight="regular">
                 MBBS, MD Heart Specialist 
+                
               </MDTypography>
             </MDBox>
           </Grid>
+         
+                
+                
           <Grid item xs={12} md={6} lg={4} sx={{ ml: "auto" }}>
             <AppBar position="static">
               <Tabs orientation={tabsOrientation} value={tabValue} onChange={handleSetTabValue}>
@@ -132,7 +137,9 @@ function Header({ name,children }) {
                       settings
                     </Icon>
                   }
+                 
                 />
+                
               </Tabs>
             </AppBar>
           </Grid>

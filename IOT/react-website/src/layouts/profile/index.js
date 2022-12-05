@@ -46,7 +46,7 @@ import { dbfirestore } from "utlis/firebase";
 function Overview() {
   const [user, loading, error] = useAuthState(auth);
   const navigate = useNavigate();
-  const [doctorData, setDoctorData] = useState(null )
+  const [doctorData, setDoctorData] = useState(null);
   const fetchUserName = async () => {
     try {
       const q = query(collection(dbfirestore, "doctors"), where("uid", "==", user?.uid));

@@ -67,8 +67,8 @@ export default function data() {
       { Header: "action", accessor: "action", align: "center" },
       { Header: "device", accessor: "device", width: "45%", align: "left" },
       { Header: "data", accessor: "data", width: "45%", align: "left" },
-      { Header: "data", accessor: "data", width: "45%", align: "left" },
       
+
     ],
   
     rows: [ 

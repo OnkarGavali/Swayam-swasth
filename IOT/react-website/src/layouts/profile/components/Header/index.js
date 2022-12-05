@@ -37,6 +37,8 @@ import breakpoints from "assets/theme/base/breakpoints";
 // Images
 import burceMars from "assets/images/bruce-mars.jpg";
 import backgroundImage from "assets/images/bg-profile.jpeg";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "@mui/material";
 
 function Header({ name,children }) {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
@@ -63,7 +65,11 @@ function Header({ name,children }) {
   }, [tabsOrientation]);
 
   const handleSetTabValue = (event, newValue) => setTabValue(newValue);
+  const navigate = useNavigate();
 
+  const toComponentB=()=>{
+navigate('/patientprofile',{state:{id:1,name:'sabaoon'}});
+  }
   return (
     <MDBox position="relative" mb={5}>
       <MDBox
@@ -103,6 +109,7 @@ function Header({ name,children }) {
               </MDTypography>
               <MDTypography variant="button" color="text" fontWeight="regular">
                 MBBS, MD Heart Specialist 
+                <div> <Button onClick={()=>{toComponentB()}}> Component B </Button></div>
               </MDTypography>
             </MDBox>
           </Grid>

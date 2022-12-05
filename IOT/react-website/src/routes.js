@@ -50,6 +50,7 @@ import Icon from "@mui/material/Icon";
 import DeviceForm from "layouts/deviceform";
 import DevicesList from "layouts/DevicesList/deviceslist";
 import PatientForm from "layouts/patientform";
+import PatientProfile from "layouts/patientProfile";
 
 const routes = [
   {
@@ -123,6 +124,14 @@ const routes = [
     icon: <Icon fontSize="small">person</Icon>,
     route: "/profile",
     component: <Profile />,
+  },
+  {
+    type: "collapse",
+    name: "Patient Profile",
+    key: "patientprofile",
+    icon: <Icon fontSize="small">person</Icon>,
+    route: "/patientprofile",
+    component: <PatientProfile />,
   },
   {
     type: "collapse",
