@@ -39,7 +39,7 @@ import burceMars from "assets/images/bruce-mars.jpg";
 import backgroundImage from "assets/images/bg-profile.jpeg";
 import { Link } from "react-router-dom";
 
-function Header({ name,children }) {
+function Header({ patientData,children} ) {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [tabValue, setTabValue] = useState(0);
   
@@ -99,13 +99,30 @@ function Header({ name,children }) {
           </Grid>
           <Grid item>
             <MDBox height="100%" mt={0.5} lineHeight={1}>
-              <MDTypography variant="h5" fontWeight="medium">
-                {name}
-              </MDTypography>
-              <MDTypography variant="button" color="text" fontWeight="regular">
-                MBBS, MD Heart Specialist 
-                
-              </MDTypography>
+              {
+                patientData!=null?(
+                  <>
+                    <MDTypography variant="h5" fontWeight="medium">
+                      {patientData.patientName}
+                    </MDTypography>
+                    <MDTypography variant="button" color="text" fontWeight="regular">
+                      Patiend id : {patientData.id}
+                    </MDTypography>
+                  </>
+                  
+                ):(
+                  <>
+                  <MDTypography variant="h5" fontWeight="medium">
+                    Patient Name
+                  </MDTypography>
+                  <MDTypography variant="button" color="text" fontWeight="regular">
+                    Patiend id
+                  </MDTypography>
+                </>
+                )
+              }
+             
+              
             </MDBox>
           </Grid>
          

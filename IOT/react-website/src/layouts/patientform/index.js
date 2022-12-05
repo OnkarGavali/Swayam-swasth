@@ -63,7 +63,8 @@ function PatientForm() {
       patientDescription,
       patientEmail,
       patientMobile,
-      doctorId:user.uid
+      doctorId:user.uid,
+      device_id:null
     }
     try{
       await addDoc(collection(dbfirestore, "patients"), finalData);

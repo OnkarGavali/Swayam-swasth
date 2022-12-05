@@ -35,34 +35,64 @@ import ProfilesList from "examples/Lists/ProfilesList";
 import DefaultProjectCard from "examples/Cards/ProjectCards/DefaultProjectCard";
 import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
 // Overview page components
-import Header from "layouts/profile/components/Header";
+
 import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
 // Data
 //import profilesListData from "layouts/profile/data/profilesListData";
 
 // Images
 
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "utlis/firebase";
 import { useEffect, useState } from "react";
-import {  useLocation, useNavigate, useParams } from "react-router-dom";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { useLocation, useNavigate } from "react-router-dom";
+import { doc, getDoc } from "firebase/firestore";
 import { dbfirestore } from "utlis/firebase";
+import Header from "./components/Header";
+import { onValue, ref } from "firebase/database";
+import { db } from "utlis/firebase";
 
-function PatientProfile({props}) {
-  const [user, loading, error] = useAuthState(auth);
+
+
+
+
+function PatientProfile() {
   const navigate = useNavigate();
-  const [doctorData, setDoctorData] = useState(null);
-  const { id } = useParams();
-  //const { state } = this.props.location;
+  const [patientData, setPatientData] = useState(null);
   const location = useLocation();
-  const fetchUserName = async () => {
+  const [iotDeviceData, setIotDeviceData] = useState(null);
+
+  const fetchPatientDetails = async (id) => {
     try {
-      const q = query(collection(dbfirestore, "doctors"), where("uid", "==", user?.uid));
-      const doc = await getDocs(q);
-      const data = doc.docs[0].data();
-      setDoctorData(data);
-      console.log(data)
+      const patientRef = doc(dbfirestore, "patients", id);
+      const docSnap = await getDoc(patientRef);
+
+      if (docSnap.exists()) {
+        let data=docSnap.data();
+        console.log("Document data:", docSnap.data());
+        setPatientData({id,...data});
+        console.log(data)
+        let iotd={};
+        if(data.device_id!=null){
+          // await data.device_id.map((id)=>{
+          //   const starCountRef = ref(db, 'devices/' + id);
+          //   onValue(starCountRef, (snapshot) => {
+          //     const data = snapshot.val();
+          //     iotd[id]=data;
+          //   });
+          // })
+          const starCountRef = ref(db, 'devices/' + data.device_id[0]);
+          onValue(starCountRef, (snapshot) => {
+            const data = snapshot.val();
+            setIotDeviceData(data);
+          });
+
+        }
+
+        //setIotDeviceData(iotd)
+      } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+        return navigate("/authentication/sign-in");
+      }
     } catch (err) {
       console.error(err);
       // alert("An error occured while fetching user data");
@@ -71,60 +101,55 @@ function PatientProfile({props}) {
 
 
   useEffect(() => {
-    if (loading) return;
-    if (!user){
-      console.log("Dashboard user not found");
+    if(location.state==null){
       return navigate("/authentication/sign-in");
     }
-    fetchUserName();
-  }, [user, loading]);
+    fetchPatientDetails(location.state.id);
+  }, []);
 
   useEffect(() => {
     
-  }, [doctorData])
+  }, [patientData,iotDeviceData])
   
   return (
     <DashboardLayout>
       <DashboardNavbar />
       <MDBox mb={2} />
-      
-      <Header name={doctorData?.name}>
+      <Header patientData={patientData}>
         <MDBox mt={5} mb={3}>
           <Grid container spacing={1}>
-            {/* <Grid item xs={12} md={6} xl={4}>
-              <PlatformSettings />
-            </Grid> */}
+            
             <Grid item xs={12} md={6} xl={4} sx={{ display: "flex" }}>
               <Divider orientation="vertical" sx={{ ml: -2, mr: 1 }} />
               {
-                user !== null ?(
+                patientData !== null ?(
                   <ProfileInfoCard
                 title="profile information"
-                description="Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
+                description={patientData.patientDescription}
                 info={{
-                  fullName: user['email'],
-                  mobile: "(44) 123 1234 123",
-                  // email: "alecthompson@mail.com",
-                  location: location.state.name,
+                  fullName: patientData.patientName,
+                  mobile: patientData.patientMobile,
+                  email: patientData.patientEmail,
+                  age: patientData.patientAge,
                 }}
                 social={[
-                  {
-                    link: "https://www.facebook.com/CreativeTim/",
-                    icon: <FacebookIcon />,
-                    color: "facebook",
-                  },
-                  {
-                    link: "https://twitter.com/creativetim",
-                    icon: <TwitterIcon />,
-                    color: "twitter",
-                  },
-                  {
-                    link: "https://www.instagram.com/creativetimofficial/",
-                    icon: <InstagramIcon />,
-                    color: "instagram",
-                  },
+                  // {
+                  //   link: "https://www.facebook.com/CreativeTim/",
+                  //   icon: <FacebookIcon />,
+                  //   color: "facebook",
+                  // },
+                  // {
+                  //   link: "https://twitter.com/creativetim",
+                  //   icon: <TwitterIcon />,
+                  //   color: "twitter",
+                  // },
+                  // {
+                  //   link: "https://www.instagram.com/creativetimofficial/",
+                  //   icon: <InstagramIcon />,
+                  //   color: "instagram",
+                  // },
                 ]}
-                action={{ route: "", tooltip: "Edit Profile" }}
+                action={{ route: "", tooltip: "Edit Profile" }} 
                 shadow={false}
               />
                 ):(
@@ -135,7 +160,7 @@ function PatientProfile({props}) {
                   fullName: "AAA",
                   mobile: "(44) 123 1234 123",
                   email: "alecthompson@mail.com",
-                  location: id,
+                  location: "usa",
                 }}
                 social={[
                   // {
@@ -162,39 +187,70 @@ function PatientProfile({props}) {
               
               <Divider orientation="vertical" sx={{ mx: 0 }} />
             </Grid>
-            <Grid item xs={12} xl={4}>
-              <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="success"
-                icon=""
-                title="Temperature"
-                count="98 deg F"
-                percentage={{
-                  color: "success",
-                  amount: "",
-                  label: "updated 3 mins ago",
-                }}
-              />
-            </MDBox>
-           
+            {/* {
+              iotDeviceData !=null ? (
+                <>
+                  {Object.keys(iotDeviceData).map((key) => {
+                    return (
+                      <Grid item xs={12} xl={4} key={key}>
+                      <MDBox mb={1.5}>
+                      <ComplexStatisticsCard
+                        color="success"
+                        icon=""
+                        title={iotDeviceData[key].deviceName}
+                        count={iotDeviceData[key].data}
+                        percentage={{
+                          color: "success",
+                          amount: "",
+                          label: "updated 3 mins ago",
+                        }}
+                      />
+                      </MDBox>
+                      </Grid>
+                    );
+                  })}
+                  
+                </>
+               
+              ) :(
+                <>
+                </>
+              )
+            } */}
 
-            </Grid>
-            <Grid item xs={12} xl={4}>
-              <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="success"
-                icon=""
-                title="Pulse"
-                count="110 BPM"
-                percentage={{
-                  color: "success",
-                  amount: "",
-                  label: "updated 3 mins ago",
-                }}
-              />
-            </MDBox>
-
-            </Grid>
+{
+              iotDeviceData !=null ? (
+                <>
+                  
+                      <Grid item xs={12} xl={4} >
+                      <MDBox mb={1.5}>
+                      <ComplexStatisticsCard
+                        color="success"
+                        icon=""
+                        title={iotDeviceData.deviceName}
+                        count={iotDeviceData.data}
+                        percentage={{
+                          color: "success",
+                          amount: "",
+                          label: "updated 3 mins ago",
+                        }}
+                      />
+                      </MDBox>
+                      </Grid>
+                   
+                  
+                </>
+               
+              ) :(
+                <>
+                Assign device
+                </>
+              )
+            }
+            
+            
+            
+            
           </Grid>
         </MDBox>
       </Header>
