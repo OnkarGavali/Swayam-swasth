@@ -108,7 +108,8 @@ function DeviceForm() {
       isPatientChecked:false,
       isAssigned:false,
       email:"",
-      patient_id:""
+      patient_id:"",
+      isCritical:false
     }
     try{
       const res= set(ref(db,'devices/'+ deviceId) ,finalData);
