@@ -68,7 +68,7 @@ function Header({ name,children }) {
   const navigate = useNavigate();
 
   const toComponentB=()=>{
-navigate('/patientprofile',{state:{id:1,name:'sabaoon'}});
+navigate('/patientprofile',{state:{id:"gcyEGHX8IGQnNWv1fLXv",name:'sabaoon'}});
   }
   return (
     <MDBox position="relative" mb={5}>

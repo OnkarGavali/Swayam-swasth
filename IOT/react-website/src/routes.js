@@ -103,7 +103,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Devices",
+    name: "Create Device",
     key: "devices",
     icon: <Icon fontSize="small">notifications</Icon>,
     route: "/deviceform",

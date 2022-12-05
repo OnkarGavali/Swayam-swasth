@@ -35,34 +35,39 @@ import ProfilesList from "examples/Lists/ProfilesList";
 import DefaultProjectCard from "examples/Cards/ProjectCards/DefaultProjectCard";
 import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
 // Overview page components
-import Header from "layouts/profile/components/Header";
+
 import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
 // Data
 //import profilesListData from "layouts/profile/data/profilesListData";
 
 // Images
 
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "utlis/firebase";
 import { useEffect, useState } from "react";
 import {  useLocation, useNavigate, useParams } from "react-router-dom";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { dbfirestore } from "utlis/firebase";
+import PlatformSettings from "./components/PlatformSettings";
+import Header from "./components/Header";
 
-function PatientProfile({props}) {
-  const [user, loading, error] = useAuthState(auth);
+function PatientProfile() {
   const navigate = useNavigate();
-  const [doctorData, setDoctorData] = useState(null);
-  const { id } = useParams();
-  //const { state } = this.props.location;
+  const [patientData, setPatientData] = useState(null);
   const location = useLocation();
-  const fetchUserName = async () => {
+  const fetchPatientDetails = async (id) => {
     try {
-      const q = query(collection(dbfirestore, "doctors"), where("uid", "==", user?.uid));
-      const doc = await getDocs(q);
-      const data = doc.docs[0].data();
-      setDoctorData(data);
-      console.log(data)
+      const patientRef = doc(dbfirestore, "patients", id);
+      const docSnap = await getDoc(patientRef);
+
+      if (docSnap.exists()) {
+        let data=docSnap.data();
+        console.log("Document data:", docSnap.data());
+        setPatientData(data);
+        console.log(data)
+      } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+        return navigate("/authentication/sign-in");
+      }
     } catch (err) {
       console.error(err);
       // alert("An error occured while fetching user data");
@@ -71,41 +76,37 @@ function PatientProfile({props}) {
 
 
   useEffect(() => {
-    if (loading) return;
-    if (!user){
-      console.log("Dashboard user not found");
+    if(location.state==null){
       return navigate("/authentication/sign-in");
     }
-    fetchUserName();
-  }, [user, loading]);
+    fetchPatientDetails(location.state.id);
+  }, []);
 
   useEffect(() => {
     
-  }, [doctorData])
+  }, [patientData])
   
   return (
     <DashboardLayout>
       <DashboardNavbar />
       <MDBox mb={2} />
       
-      <Header name={doctorData?.name}>
+      <Header name={"ho"}>
         <MDBox mt={5} mb={3}>
           <Grid container spacing={1}>
-            {/* <Grid item xs={12} md={6} xl={4}>
-              <PlatformSettings />
-            </Grid> */}
+            
             <Grid item xs={12} md={6} xl={4} sx={{ display: "flex" }}>
               <Divider orientation="vertical" sx={{ ml: -2, mr: 1 }} />
               {
-                user !== null ?(
+                patientData !== null ?(
                   <ProfileInfoCard
                 title="profile information"
-                description="Hi, I’m Alec Thompson, Decisions: If you can’t decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
+                description={patientData.patientDescription}
                 info={{
-                  fullName: user['email'],
+                  fullName: patientData.patientName,
                   mobile: "(44) 123 1234 123",
                   // email: "alecthompson@mail.com",
-                  location: location.state.name,
+                  location: "usa",
                 }}
                 social={[
                   {
@@ -135,7 +136,7 @@ function PatientProfile({props}) {
                   fullName: "AAA",
                   mobile: "(44) 123 1234 123",
                   email: "alecthompson@mail.com",
-                  location: id,
+                  location: "usa",
                 }}
                 social={[
                   // {
