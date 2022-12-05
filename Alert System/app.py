@@ -2,23 +2,9 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
 import smtplib, ssl
+import time
 
-# smtp_server = "smtp.gmail.com"
-# port = 587  # For starttls
-# sender_email = "swayamswastha@gmail.com"
-# password = "Swayam@123"
 
-# # Create a secure SSL context
-# context = ssl.create_default_context()
-# server = smtplib.SMTP(smtp_server,port)
-# server.ehlo() # Can be omitted
-# server.starttls(context=context) # Secure the connection
-# server.ehlo() # Can be omitted
-# server.login(sender_email, password)
-# server.sendmail(sender_email, "sarnobatadi@gmail.com", "TEST")
-
-# smtp_server = "smtp.mail.yahoo.com"
-# port = 587  # For starttls
 sender_email = "swayamswastha@gmail.com"
 password = "usvvtpjbvkzcpgno"
 
@@ -27,9 +13,7 @@ server.ehlo()
 server.starttls() # Secure the connection
 server.ehlo()
 server.login(sender_email, password)
-subject = "Alert From SWAYAM SWASTHA !! "
-body = 'Heart Rate for your Patient was observed outside threshold contact Doctors !! '
-msg = f"Subject:{subject}\n\n{body}"
+
 
 
 
@@ -43,14 +27,39 @@ firebase_admin.initialize_app(cred, {
 
 })
 
-ref = db.reference('/devices')
-dict_patient = ref.get()
-for n in dict_patient:
-    # print(n)
-    if(dict_patient[n]['email']!=""):
-        print(dict_patient[n]['email'])
-        emailid = dict_patient[n]['email']
-        server.sendmail(sender_email, emailid, msg)
+
+
+
+while(True):
+
+   
+  
+    ref = db.reference('/devices')
+    bpm_val = ref.get()
+    # print(bpm_val['5046323e'])
+    # print(bpm_val['a87f6fb5'])
+    criticalVal =bpm_val['5046323e']['criticalLower']
+    criticalUp = bpm_val['5046323e']['criticalUpper']
+    data  = bpm_val['5046323e']['data']
+    devList = ['5046323e']
+    for k in devList:
+        if(int(data)<int(criticalVal) or int(data)>int(criticalUp)):
+                    
+            emailid = bpm_val[k]['patient_email']
+            docemail = bpm_val[k]['doctor_email']
+            subject = "Alert From SWAYAM SWASTHA !! "
+            body =  str(bpm_val[k]['deviceName']) +  ' Recorded value beyond threshold is  : ' + str(data) 
+            msg = f"Subject:{subject}\n\n{body}"
+            server.sendmail(sender_email, emailid, msg)
+            server.sendmail(sender_email, docemail, msg)
+            time.sleep(300)
+
+        # for n in dict_patient:
+        #     if(dict_patient[n]['email']!=""):
+      
+
+    print("SLEEP")
+    time.sleep(1)
 
 
 
