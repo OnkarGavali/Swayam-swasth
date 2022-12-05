@@ -67,9 +67,7 @@ function Header({ name,children }) {
   const handleSetTabValue = (event, newValue) => setTabValue(newValue);
   const navigate = useNavigate();
 
-  const toComponentB=()=>{
-navigate('/patientprofile',{state:{id:"gcyEGHX8IGQnNWv1fLXv",name:'sabaoon'}});
-  }
+  
   return (
     <MDBox position="relative" mb={5}>
       <MDBox
@@ -109,7 +107,7 @@ navigate('/patientprofile',{state:{id:"gcyEGHX8IGQnNWv1fLXv",name:'sabaoon'}});
               </MDTypography>
               <MDTypography variant="button" color="text" fontWeight="regular">
                 MBBS, MD Heart Specialist 
-                <div> <Button onClick={()=>{toComponentB()}}> Component B </Button></div>
+                
               </MDTypography>
             </MDBox>
           </Grid>

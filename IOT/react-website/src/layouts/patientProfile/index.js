@@ -61,6 +61,7 @@ function PatientProfile() {
   const [iotDeviceData, setIotDeviceData] = useState(null);
 
   const fetchPatientDetails = async (id) => {
+    console.log("id:",id)
     try {
       const patientRef = doc(dbfirestore, "patients", id);
       const docSnap = await getDoc(patientRef);
@@ -70,7 +71,6 @@ function PatientProfile() {
         console.log("Document data:", docSnap.data());
         setPatientData({id,...data});
         console.log(data)
-        let iotd={};
         if(data.device_id!=null){
           // await data.device_id.map((id)=>{
           //   const starCountRef = ref(db, 'devices/' + id);
@@ -79,7 +79,7 @@ function PatientProfile() {
           //     iotd[id]=data;
           //   });
           // })
-          const starCountRef = ref(db, 'devices/' + data.device_id[0]);
+          const starCountRef = ref(db, 'devices/' + data.device_id);
           onValue(starCountRef, (snapshot) => {
             const data = snapshot.val();
             setIotDeviceData(data);
@@ -218,7 +218,7 @@ function PatientProfile() {
               )
             } */}
 
-{
+            {
               iotDeviceData !=null ? (
                 <>
                   
@@ -247,10 +247,6 @@ function PatientProfile() {
                 </>
               )
             }
-            
-            
-            
-            
           </Grid>
         </MDBox>
       </Header>

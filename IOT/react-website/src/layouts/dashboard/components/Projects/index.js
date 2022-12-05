@@ -25,6 +25,7 @@ import DataTable from "examples/Tables/DataTable";
 import { query, collection, getDocs, where } from "firebase/firestore";
 // Data
 import data from "layouts/dashboard/components/Projects/data";
+import { Button } from "@mui/material";
 
 function Projects() {
   
@@ -43,23 +44,16 @@ function Projects() {
   const [user, loading, error] = useAuthState(auth);
   const [name, setName] = useState("");
   const navigate = useNavigate();
-  const fetchUserName = async () => {
-    try {
-      console.log(user)
-      const q = query(collection(dbfirestore, "users"), where("uid", "==", user?.uid));
-      const doc = await getDocs(q);
-      const data = doc.docs[0].data();
-      setName(data.name);
-    } catch (err) {
-      console.error(err);
-      alert("An error occured while fetching user data");
-    }
-  };
-  const Company = ({ image, name }) => (
+  const toPatientProfile=(id)=>{
+    navigate('/patientprofile',{state:{id:id}});
+      }
+
+  const Company = ({ name,id }) => (
     <MDBox display="flex" alignItems="center" lineHeight={1}>
-      <MDAvatar src={image} name={name} size="sm" />
+     
       <MDTypography variant="button" fontWeight="medium" ml={1} lineHeight={1}>
-        {name}
+          <Button onClick={()=>{toPatientProfile(id)}}> {name} </Button>
+        
       </MDTypography>
     </MDBox>
   );
@@ -68,13 +62,14 @@ function Projects() {
     const q = query(collection(dbfirestore, "patients"));
     const doc = await getDocs(q);
     doc.forEach((docs)=>{
-    let entry = docs.data()  
+    let entry = docs.data()  ;
+    //console.log(docs);
     let obj =  {
-            companies: <Company  name={entry['name']} />,
+            companies: <Company  name={entry['patientName']} id={docs.id}/>,
           
             budget: (
               <MDTypography variant="caption" color="text" fontWeight="medium">
-                {entry['email']}
+                {entry['patientEmail']}
               </MDTypography>
             ),
             completion: (
