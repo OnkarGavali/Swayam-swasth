@@ -107,8 +107,10 @@ function DeviceForm() {
       lastModified:currd.getTime(),
       isPatientChecked:false,
       isAssigned:false,
-      email:"",
+      patient_email:"",
       patient_id:"",
+      doctor_email:"",
+      doctor_id:"",
       isCritical:false
     }
     try{
