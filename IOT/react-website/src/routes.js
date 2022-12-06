@@ -51,6 +51,7 @@ import DeviceForm from "layouts/deviceform";
 import DevicesList from "layouts/DevicesList/deviceslist";
 import PatientForm from "layouts/patientform";
 import PatientProfile from "layouts/patientProfile";
+import AssignDevice from "layouts/AssignDevice";
 
 const routes = [
   {
@@ -69,14 +70,14 @@ const routes = [
   //   route: "/tables",
   //   component: <Tables />,
   // },
-  {
-    type: "collapse",
-    name: "Devices List",
-    key: "deviceslist",
-    icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/deviceslist",
-    component: <DevicesList />,
-  },
+  // {
+  //   type: "collapse",
+  //   name: "Devices List",
+  //   key: "deviceslist",
+  //   icon: <Icon fontSize="small">table_view</Icon>,
+  //   route: "/deviceslist",
+  //   component: <DevicesList />,
+  // },
   // {
   //   type: "collapse",
   //   name: "Billing",
@@ -93,13 +94,21 @@ const routes = [
   //   route: "/rtl",
   //   component: <RTL />,
   // },
+  // {
+  //   type: "collapse",
+  //   name: "Notifications",
+  //   key: "notifications",
+  //   icon: <Icon fontSize="small">notifications</Icon>,
+  //   route: "/notifications",
+  //   component: <Notifications />,
+  // },
   {
     type: "collapse",
-    name: "Notifications",
-    key: "notifications",
+    name: "Assign Device",
+    key: "assigndevices",
     icon: <Icon fontSize="small">notifications</Icon>,
-    route: "/notifications",
-    component: <Notifications />,
+    route: "/assigndevice",
+    component: <AssignDevice />,
   },
   {
     type: "collapse",
