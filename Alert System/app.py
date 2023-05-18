@@ -50,6 +50,7 @@ while(True):
             subject = "Alert From SWAYAM SWASTHA !! "
             body =  str(bpm_val[k]['deviceName']) +  ' Recorded value beyond threshold is  : ' + str(data) 
             msg = f"Subject:{subject}\n\n{body}"
+            print("SENT")
             server.sendmail(sender_email, emailid, msg)
             server.sendmail(sender_email, docemail, msg)
             time.sleep(300)
