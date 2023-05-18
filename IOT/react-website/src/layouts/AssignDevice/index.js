@@ -49,7 +49,7 @@ function AssignDevice() {
       console.log(tmp)
       setPatientsList(tmp);
       if(tmp.size>0)
-      setPatientID(tmp[0].value)
+      setPatientID(tmp[0].value) ;
     } catch (err) {
       console.error(err);
       // alert("An error occured while fetching user data");
@@ -145,7 +145,6 @@ function AssignDevice() {
               <MDBox pt={2} px={2}>
               
                 <TextField
-                   
                     select
                     label="Select Device "
                     value={deviceId}
@@ -155,7 +154,6 @@ function AssignDevice() {
                     margin="normal"
                     >
                     {devicesList.size !=0 && devicesList.map((option) => (
-                      
                     <MenuItem key={option.value} value={option.value}>
                         {option.label}{console.log("hi ")}
                         </MenuItem>
