@@ -59,6 +59,7 @@ function PatientProfile() {
   const [patientData, setPatientData] = useState(null);
   const location = useLocation();
   const [iotDeviceData, setIotDeviceData] = useState(null);
+  const [isCritical, setisCritical] = useState("success")
 
   const fetchPatientDetails = async (id) => {
     console.log("id:",id)
@@ -83,6 +84,11 @@ function PatientProfile() {
           onValue(starCountRef, (snapshot) => {
             const data = snapshot.val();
             setIotDeviceData(data);
+            if(Number(data.data)<Number(data.criticalLower) || Number(data.data)>Number(data.criticalUpper)){
+              setisCritical("warning");
+            }else{
+              setisCritical("success");
+            }
           });
 
         }
@@ -109,7 +115,7 @@ function PatientProfile() {
 
   useEffect(() => {
     
-  }, [patientData,iotDeviceData])
+  }, [patientData,iotDeviceData,isCritical])
   
   return (
     <DashboardLayout>
@@ -225,12 +231,12 @@ function PatientProfile() {
                       <Grid item xs={12} xl={4} >
                       <MDBox mb={1.5}>
                       <ComplexStatisticsCard
-                        color="success"
+                        color={isCritical}
                         icon=""
                         title={iotDeviceData.deviceName}
                         count={iotDeviceData.data}
                         percentage={{
-                          color: "success",
+                          color: {isCritical},
                           amount: "",
                           label: "updated 3 mins ago",
                         }}
